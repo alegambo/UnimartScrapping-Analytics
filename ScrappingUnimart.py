@@ -26,9 +26,13 @@ class UnimartScraper:
     ROOT_NAV_ID = 'AccessibleNav'  # ID for the main navigation element on the website
     XPATH_DATA_LINK = './/*[@data-link]'  # XPath to locate elements with a data-link attribute
     MAIN_CATEGORIES_TITLE = 'Main Categories'  # Title or label for main categories
+
     OUTPUT_DIRECTORY = 'C:\\Users\\alega\\Documents\\Excels\\'  # Directory to store output files
     OUTPUT_DIRECTORY_URLS = 'URLs\\'  # Sub-directory specifically for URLs
     READ_DIRECTORY = 'C:\\Users\\alega\\Documents\\Excels\\Urls\\'  # Directory to read input files
+    MAIN_CATEGORIES_SUBFOLDER='MainCategories\\'
+    MAIN_CATEGORIES_URLS_SUBCATEGORIES=OUTPUT_DIRECTORY+MAIN_CATEGORIES_SUBFOLDER+ 'MainCategories_urls_subcategories\\'
+    ARTICLES_BY_SUBCATEGORY_FOLDER=OUTPUT_DIRECTORY+'Articles_by_subcategory\\'
     BUCKET = 'unimartbucket'  # Name of the S3 bucket for cloud storage
     FILE_WITH_MAIN_URLS = 'MAIN_URLS.xlsx'  # Excel file containing main URLs
     # XPath for the main content div containing article details on the website
@@ -73,7 +77,7 @@ class UnimartScraper:
         # Navigate to the primary URL
         self.driver.get(url)
         time.sleep(15)
-        file_path = self.OUTPUT_DIRECTORY + 'Articles_by_subcategory\\' + subcategory + '.xlsx'
+        file_path = self.ARTICLES_BY_SUBCATEGORY_FOLDER + subcategory + '.xlsx'
 
         while True:
             time.sleep(10)
@@ -170,7 +174,7 @@ class UnimartScraper:
         """
 
         # List all files in the output directory
-        files = os.listdir(self.OUTPUT_DIRECTORY)
+        files = os.listdir(self.MAIN_CATEGORIES_URLS_SUBCATEGORIES)
 
         # Filter and get only Excel files
         excelFiles = [f for f in files if f.endswith('.xlsx') or f.endswith('.xls')]
@@ -178,7 +182,7 @@ class UnimartScraper:
         for file in excelFiles:
             print(file)
             file_without_extension = file.replace(".xlsx", "")
-            complete_path = os.path.join(self.OUTPUT_DIRECTORY, file)
+            complete_path = os.path.join(self.MAIN_CATEGORIES_URLS_SUBCATEGORIES, file)
             print(complete_path)
 
             # Read the Excel file
@@ -259,7 +263,7 @@ class UnimartScraper:
 
         # Create a dataframe and save it to an Excel file
         df = pd.DataFrame({self.MAIN_CATEGORIES_TITLE: filtered_main_categories})
-        df.to_excel(self.OUTPUT_DIRECTORY + 'MainCategories\\' + self.MAIN_CATEGORIES_TITLE + '.xlsx', index=False)
+        df.to_excel(self.OUTPUT_DIRECTORY + self.MAIN_CATEGORIES_SUBFOLDER + self.MAIN_CATEGORIES_TITLE + '.xlsx', index=False)
 
     def get_data_links(self, nav):
         """
@@ -350,7 +354,7 @@ class UnimartScraper:
             li.click()  # Click again to collapse the category (or navigate back)
 
             # Save the dataframe to an Excel file named after the main category
-            df.to_excel(self.OUTPUT_DIRECTORY + category + '.xlsx', sheet_name=category, index=False)
+            df.to_excel(self.MAIN_CATEGORIES_URLS_SUBCATEGORIES + category + '.xlsx', sheet_name=category, index=False)
 
     def uploadtoS3(self, directory=None):
         """
@@ -422,8 +426,11 @@ class UnimartScraper:
         # Initiate the scraping process for the list items using their associated data-links
         self.get_elements_by_data_links(list_li_categories, data_links, main_categories)
 
+        # Start the main scraping method of the scraper
+        self.get_articule_info()
+
         # Commented line: Closes the browser session after scraping
-        # self.driver.quit()
+        self.driver.quit()
 
 
 if __name__ == "__main__":
@@ -435,8 +442,9 @@ if __name__ == "__main__":
     # Instantiate the UnimartScraper class
     scraper = UnimartScraper()
 
-    # Start the main scraping method of the scraper
-    scraper.get_articule_info()
+    # Start scrapping
+    scraper.scrape_unimart()
+
 
     # Record the current datetime after finishing the scraping process
     after = datetime.now()
