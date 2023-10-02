@@ -1,14 +1,17 @@
 # UnimartScrapping-Analytics
 
+A specialized tool suite designed for the entire data journey of the [Unimart](https://www.unimart.com/) website - from scraping to analytical visualization.
 
-A specialized web scraper designed to extract and store data from the Unimart website.
+## About Unimart
+
+[Unimart](https://www.unimart.com/) is a leading online store in Costa Rica, boasting an extensive offering of over 40,000 products at competitive prices. Authorized to retail products from renowned brands such as Nexxt Solutions, Argom, Xiaomi, Google, Amazon, and more, Unimart has carved its niche primarily in the electronic, computing, home, sports, perfumes sectors, among others. With its expansive product range and commitment to quality, it has established itself as a premier online shopping destination in the region.
 
 ## Description
 
 This project is divided into two main phases:
 
 ### 1. Data Extraction
-This phase involves a web scraper built to navigate the Unimart website (https://www.unimart.com/), identify and extract product categories, subcategories, and specific product details such as brand, name, price, and offer price. Extracted data is stored in Excel files, with functionality to upload these files to an Amazon S3 bucket.
+This phase involves a web scraper built to navigate the Unimart website [Unimart](https://www.unimart.com/), identify and extract product categories, subcategories, and specific product details such as brand, name, price, and offer price. Extracted data is stored in Excel files, with functionality to upload these files to an Amazon S3 bucket.
 
 - Automated browsing using `selenium`.
 - Data extraction structured into categories and subcategories.
@@ -61,5 +64,5 @@ pip install -r requirements.txt
 
 To start the scraper, simply navigate to the project folder and run(Phase 1):
 
-python Unimart_Scrapping.py
+python Scrapping_Unimart.py
 
