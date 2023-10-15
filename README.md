@@ -2,6 +2,18 @@
 
 A specialized tool suite designed for the entire data journey of the [Unimart](https://www.unimart.com/) website - from scraping to analytical visualization.
 
+# Table of Contents
+- [UnimartScrapping-Analytics](#unimartscrapping-analytics)
+- [About Unimart](#about-unimart)
+- [Description](#description)
+  - [Data Extraction](#1-data-extraction)
+  - [Data Analysis & Visualization](#2-data-analysis--visualization)
+- [Key Features](#key-features)
+  - [Data Extraction](#data-extraction-1)
+  - [Data Analysis & Visualization](#data-analysis--visualization-1)
+- [Installation](#installation)
+- [Usage](#usage)
+
 ## About Unimart
 
 [Unimart](https://www.unimart.com/) is a leading online store in Costa Rica, boasting an extensive offering of over 40,000 products at competitive prices. Authorized to retail products from renowned brands such as Nexxt Solutions, Argom, Xiaomi, Google, Amazon, and more, Unimart has carved its niche primarily in the electronic, computing, home, sports, perfumes sectors, among others. With its expansive product range and commitment to quality, it has established itself as a premier online shopping destination in the region.
@@ -45,6 +57,10 @@ Taking the extracted data from the Excel files, this phase populates a PostgreSQ
 git clone https://github.com/alegambo/UnimartScrapping-Analytics.git
 
 
+
+
+
+
 3. Navigate to the project directory:
 
 cd UnimartScrapping-Analytics
@@ -58,6 +74,32 @@ pip install -r requirements.txt
 5. Set up your environment for Selenium and the respective WebDriver (e.g., ChromeDriver if you're using Chrome).
 
 6. Configure your AWS credentials if planning to use the S3 functionality.
+
+7. Ensure you have the following folder structure in your "Documents" directory:
+```
+Documents/
+│
+└───Excels/
+    │
+    ├───Articles_by_subcategory/
+    │
+    ├───MainCategories/
+        │
+        └───MainCategories_urls_subcategories/
+```
+8. By default, the code uses the following directory paths:
+
+```python
+OUTPUT_DIRECTORY = 'C:\\Users\\alega\\Documents\\Excels\\'  # Directory to store output files
+READ_DIRECTORY = 'C:\\Users\\alega\\Documents\\Excels\\Urls\\'
+```
+
+If your directory structure is different, or you want to change the location where files are read from or written to, modify the above variables in the code accordingly.
+
+
+
+
+
 
 
 ## Usage
