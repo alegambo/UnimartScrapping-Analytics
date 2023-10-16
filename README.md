@@ -31,10 +31,30 @@ This phase involves a web scraper built to navigate the Unimart website [Unimart
 - Functionality to interact with AWS S3 using `boto3`.
 
 ### 2. Data Analysis & Visualization
-Taking the extracted data from the Excel files, this phase populates a PostgreSQL database designed for structured storage and efficient querying. Various analytical techniques are employed to visualize data and provide meaningful insights into the Unimart products' landscape. Features include:
+### 2. Data Analysis & Visualization
 
-- Seamless database integration using `psycopg2`.
-- Comprehensive database management with insertion, query, and other CRUD operations.
+In this phase, the extracted data from the Excel files is imported into a PostgreSQL database. This database has been meticulously designed for both structured storage and efficient querying, ensuring optimal performance during analysis. By leveraging various analytical techniques, we aim to provide rich visualizations and derive meaningful insights from the Unimart product landscape.
+
+- **Database Model:** The structure and relations within the database are illustrated in the following model:
+
+ ![Database_Model](resources/Model_Db.PNG)
+
+Our database design is structured to efficiently store and query information about Unimart products. Here's a brief overview:
+
+	- Category: Stores main product categories.
+	- Subcategory: Specific subcategories associated with a main category.
+	- Type: Types of products, tied to a specific subcategory.
+	- Brand: Product brands.
+	- Price: Holds product prices with an optional note field.
+	- Article: Specific items. These are linked with a brand, price, and type.
+	- PriceHistory: Historical price change records for each item.
+	- OfferPrice: Special or offer prices for items, with start and end dates.
+
+Several indices have also been created to enhance query speeds on commonly queried fields such as category names, subcategories, brands, and more. For a detailed and comprehensive view of the schema, you can refer to the [complete script here](resources/database_design.sql).
+
+- **Seamless Database Integration:** The project integrates seamlessly with PostgreSQL using the `psycopg2` library.
+- **Comprehensive Database Management:** Beyond mere data storage, the system boasts extensive database management features, from data insertion and queries to other CRUD operations.
+
 
 ## Key Features
 
@@ -95,9 +115,6 @@ READ_DIRECTORY = 'C:\\Users\\alega\\Documents\\Excels\\Urls\\'
 ```
 
 If your directory structure is different, or you want to change the location where files are read from or written to, modify the above variables in the code accordingly.
-
-
-
 
 
 
