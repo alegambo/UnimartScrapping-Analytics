@@ -8,8 +8,13 @@ A specialized tool suite designed for the entire data journey of the [Unimart](h
 - [Description](#description)
   - [Data Extraction](#1-data-extraction)
   - [Data Analysis & Visualization](#2-data-analysis--visualization)
+- [Sample Statistics](#sample-statistics)
+  - [Top 10 brands with the most articles](#top-10-brands-with-the-most-articles)
+  - [Number of Articles by Subcategory](#number-of-articles-by-subcategory)
+  - [Price Statistics by Category](#price-statistics-by-category)
+  - [Most Expensive Articles](#top-10-most-expensive-articles)
 - [Key Features](#key-features)
-  - [Data Extraction](#data-extraction-1)
+  - [Data Extraction](#data-extraction)
   - [Data Analysis & Visualization](#data-analysis--visualization-1)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -31,7 +36,6 @@ This phase involves a web scraper built to navigate the Unimart website [Unimart
 - Functionality to interact with AWS S3 using `boto3`.
 
 ### 2. Data Analysis & Visualization
-### 2. Data Analysis & Visualization
 
 In this phase, the extracted data from the Excel files is imported into a PostgreSQL database. This database has been meticulously designed for both structured storage and efficient querying, ensuring optimal performance during analysis. By leveraging various analytical techniques, we aim to provide rich visualizations and derive meaningful insights from the Unimart product landscape.
 
@@ -39,7 +43,7 @@ In this phase, the extracted data from the Excel files is imported into a Postgr
 
  ![Database_Model](resources/Model_Db.PNG)
 
-Our database design is structured to efficiently store and query information about Unimart products. Here's a brief overview:
+Database design is structured to efficiently store and query information about Unimart products. Here's a brief overview:
 
 	- Category: Stores main product categories.
 	- Subcategory: Specific subcategories associated with a main category.
@@ -54,6 +58,23 @@ Several indices have also been created to enhance query speeds on commonly queri
 
 - **Seamless Database Integration:** The project integrates seamlessly with PostgreSQL using the `psycopg2` library.
 - **Comprehensive Database Management:** Beyond mere data storage, the system boasts extensive database management features, from data insertion and queries to other CRUD operations.
+
+## Sample Statistics
+
+To provide a glimpse into the kind of analytical insights this tool can generate, here are a few sample visualizations:
+
+### Top 10 brands with the most articles
+![Top_brands](resources/stats_images/Figure_1.png)
+
+### Number of Articles by Subcategory
+![Number_of_Articles_by_Subcategory](resources/stats_images/Number_of_Articles_by_Subcategory.png)
+
+### Price Statistics by Category
+Average, Minimum, and Maximum prices of articles for each main category.
+![price_statistics](resources/stats_images/price_statistics.png)
+
+### Top 10 most expensive articles
+![expensive_articles](resources/stats_images/expensive_articles.png)
 
 
 ## Key Features
@@ -121,7 +142,50 @@ If your directory structure is different, or you want to change the location whe
 
 ## Usage
 
-To start the scraper, simply navigate to the project folder and run(Phase 1):
+### Starting the Scraper (Phase 1)
 
-python Scrapping_Unimart.py
+1. Navigate to the project directory:
+
+```python
+cd path_to/UnimartScrapping-Analytics
+```
+
+2. Run the scraper script:
+
+```python
+python ScrappingUnimart.py
+```
+
+
+This process populates Excel files with the data extracted from Unimart. Please note that the scraping procedure is comprehensive and, given the extensive range of products on the Unimart website, it may take at least 3 hours to complete.
+
+### Starting to Populate Database and get Analytics (Phase 2)
+
+Follow these steps to populate your database and generate analytics from the scraped data:
+
+
+Before running the script, ensure that you've properly set up the database according to the provided design. 
+
+Also, ensure the correct credentials are set in the script:
+
+```
+HOST = 'localhost'
+DBNAME = 'unimart'
+USER = 'postgres'
+PASSWORD = 'root'
+PORT = '5432'
+```
+Modify these values if your database setup has different credentials or connection parameters.
+
+1. Navigate to the project directory:
+
+```python
+cd path_to/UnimartScrapping-Analytics
+```
+
+2. Run the script:
+
+```python
+python DataAnalysisUnimart.py
+```
 

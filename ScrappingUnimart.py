@@ -20,13 +20,14 @@ class UnimartScraper:
         A scraper class designed to extract data from the Unimart website.
         """
 
-    # Constants representing various URLs, file paths, and scraping parameters
+    # For ease of development, folder paths were added statically.
+    # Adjustments are needed to make the code portable across different operating systems.
     ROOT_URL = 'https://www.unimart.com/'
     ROBOTS_URL = 'https://www.unimart.com/robots.txt'
     ROOT_NAV_ID = 'AccessibleNav'  # ID for the main navigation element on the website
     XPATH_DATA_LINK = './/*[@data-link]'  # XPath to locate elements with a data-link attribute
     MAIN_CATEGORIES_TITLE = 'Main Categories'  # Title or label for main categories
-
+    #For pratical Purposes that folders was added statically
     OUTPUT_DIRECTORY = 'C:\\Users\\alega\\Documents\\Excels\\'  # Directory to store output files
     OUTPUT_DIRECTORY_URLS = 'URLs\\'  # Sub-directory specifically for URLs
     READ_DIRECTORY = 'C:\\Users\\alega\\Documents\\Excels\\Urls\\'  # Directory to read input files

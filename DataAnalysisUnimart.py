@@ -3,6 +3,7 @@ import psycopg2
 import os
 import locale
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcm
 import numpy as np
 
 
@@ -512,7 +513,8 @@ def get_article_count_by_subcategory(db_manager):
         article_count DESC
     limit 10;
     """
-    return db_manager.fetch_all(query)
+    data= db_manager.fetch_all(query)
+    plot_article_count_by_subcategory(data)
 
 
 def insert_category_from_excel(db_manager):
@@ -770,7 +772,10 @@ LEFT JOIN Price P ON A.ID_Price = P.ID_Price
 GROUP BY C.category_name
 ORDER BY AvgPrice DESC;
     """
-    return db_manager.fetch_all(query)
+    data= db_manager.fetch_all(query)
+    filtered_data = [row for row in data if not (row[1] is None and row[2] is None and row[3] is None)]
+    # # print(data)
+    plot_price_stats_by_category(filtered_data)
 
 
 def most_expensive_articles(db_manager):
@@ -792,7 +797,8 @@ ORDER BY
     P.Price DESC
 LIMIT 10;
     """
-    return db_manager.fetch_all(query)
+    data= db_manager.fetch_all(query)
+    plot_most_expensive_articles(data)
 
 
 def plot_brand_article_count(data):
@@ -804,8 +810,11 @@ def plot_brand_article_count(data):
     brands = [row[0] for row in data]
     counts = [row[1] for row in data]
 
+    #MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.cmap = plt.cm.get_cmap("tab10", len(brands))
+    cmap = plt.cm.get_cmap("tab10", len(brands))
+    colors = [cmap(i) for i in range(len(brands))]
     plt.figure(figsize=(10, 8))
-    bars = plt.bar(brands, counts)
+    bars = plt.bar(brands, counts,color=colors)
 
     # Display the exact counts on top of the bars
     for bar in bars:
@@ -815,7 +824,7 @@ def plot_brand_article_count(data):
                  ha='center', va='bottom',
                  color='black')
 
-    plt.title('Number of items per brand')
+    plt.title('Number of items Per brand')
     plt.ylabel('Article Count')
     plt.xlabel('Brand')
     plt.xticks(rotation=45)
@@ -883,7 +892,9 @@ def plot_most_expensive_articles(data):
 
     # Get the article names and their prices
     articles = [row[0] for row in data]
+    print(articles)
     prices = [row[1] for row in data]
+    print(prices)
 
     # Create the plot
     plt.figure(figsize=(15, 10))
@@ -894,7 +905,7 @@ def plot_most_expensive_articles(data):
         plt.text(bar.get_width() - (0.02 * float(max(prices))),
                  bar.get_y() + bar.get_height() / 2,
                  '₡%.2f' % bar.get_width(),  # Display the price with 2 decimal places
-                 ha='center', va='center',
+                 ha='right', va='center',
                  color='white', fontsize=10)
 
     # Set the title and labels
@@ -904,6 +915,7 @@ def plot_most_expensive_articles(data):
     plt.tight_layout()
     # Reverse the y-axis to have the most expensive article at the top
     plt.gca().invert_yaxis()
+    plt.ticklabel_format(style='plain', axis='x')
     plt.show()
 
 
@@ -940,7 +952,7 @@ def plot_article_count_by_subcategory(data):
 
 
 if __name__ == "__main__":
-    # Parámetros de conexión
+    # Connection credentials
     HOST = 'localhost'
     DBNAME = 'unimart'
     USER = 'postgres'
@@ -955,13 +967,8 @@ if __name__ == "__main__":
     insert_brands_from_excel(db_manager)
     insert_type_from_excel(db_manager)
     insert_articule_from_excel(db_manager)
-    # get_article_count_by_brand(db_manager)
-    # data = get_article_count_by_subcategory(db_manager)
-    # plot_article_count_by_subcategory(data)
-    # # data=get_price_stats_by_category(db_manager)
-    # # filtered_data = [row for row in data if not (row[1] is None and row[2] is None and row[3] is None)]
-    # # print(data)
-    # # plot_price_stats_by_category(filtered_data)
-    # # data=most_expensive_articles(db_manager)
-    # # plot_most_expensive_articles(data)
+    #get_article_count_by_brand(db_manager)
+    #get_article_count_by_subcategory(db_manager)
+    #get_price_stats_by_category(db_manager)
+    #most_expensive_articles(db_manager)
     db_manager.disconnect()
